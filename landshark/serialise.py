@@ -19,6 +19,7 @@ from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
 import numpy as np
 import tensorflow as tf
+from tensorflow.io import FixedLenFeature
 
 from landshark.basetypes import CategoricalType
 from landshark.metadata import Feature, FeatureSet, Target
@@ -28,13 +29,13 @@ from landshark.metadata import Feature, FeatureSet, Target
 #
 
 _FDICT = {
-    "x_cat": tf.FixedLenFeature([], tf.string),
-    "x_cat_mask": tf.FixedLenFeature([], tf.string),
-    "x_con": tf.FixedLenFeature([], tf.string),
-    "x_con_mask": tf.FixedLenFeature([], tf.string),
-    "y": tf.FixedLenFeature([], tf.string),
-    "indices": tf.FixedLenFeature([], tf.string),
-    "coords": tf.FixedLenFeature([], tf.string)
+    "x_cat": FixedLenFeature([], tf.string),
+    "x_cat_mask": FixedLenFeature([], tf.string),
+    "x_con": FixedLenFeature([], tf.string),
+    "x_con_mask": FixedLenFeature([], tf.string),
+    "y": FixedLenFeature([], tf.string),
+    "indices": FixedLenFeature([], tf.string),
+    "coords": FixedLenFeature([], tf.string)
     }
 
 
