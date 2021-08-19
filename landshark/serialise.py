@@ -78,17 +78,17 @@ def deserialise(
     targets: Optional[Target] = None,
 ) -> Union[Tuple[tf.Tensor, tf.Tensor], tf.Tensor]:
     """Decode tf.record strings into Tensors."""
-    raw_features = tf.parse_example(row, features=_FDICT)
+    raw_features = tf.io.parse_example(row, features=_FDICT)
     npatch_side = 2 * features.halfwidth + 1
     with tf.name_scope("Inputs"):
-        x_con = tf.decode_raw(raw_features["x_con"], tf.float32)
-        x_cat = tf.decode_raw(raw_features["x_cat"], tf.int32)
-        x_con_mask = tf.decode_raw(raw_features["x_con_mask"], tf.uint8)
-        x_cat_mask = tf.decode_raw(raw_features["x_cat_mask"], tf.uint8)
+        x_con = tf.io.decode_raw(raw_features["x_con"], tf.float32)
+        x_cat = tf.io.decode_raw(raw_features["x_cat"], tf.int32)
+        x_con_mask = tf.io.decode_raw(raw_features["x_con_mask"], tf.uint8)
+        x_cat_mask = tf.io.decode_raw(raw_features["x_cat_mask"], tf.uint8)
         x_con_mask = tf.cast(x_con_mask, tf.bool)
         x_cat_mask = tf.cast(x_cat_mask, tf.bool)
-        indices = tf.decode_raw(raw_features["indices"], tf.int32)
-        coords = tf.decode_raw(raw_features["coords"], tf.float64)
+        indices = tf.io.decode_raw(raw_features["indices"], tf.int32)
+        coords = tf.io.decode_raw(raw_features["coords"], tf.float64)
         indices.set_shape((None, 2))
         coords.set_shape((None, 2))
 
@@ -116,7 +116,7 @@ def deserialise(
         if targets is not None:
             categorical = targets.dtype == CategoricalType
             y_type = tf.int32 if categorical else tf.float32
-            y = tf.decode_raw(raw_features["y"], y_type)
+            y = tf.io.decode_raw(raw_features["y"], y_type)
             ntargets = targets.D
             y.set_shape((None, ntargets))
         else:

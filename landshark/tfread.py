@@ -128,11 +128,12 @@ def _concat_dict(xlist: List[TData]) -> TData:
 
 def extract_split_xy(dataset: tf.data.TFRecordDataset) -> XYData:
     """Extract (X, Y) data from tensor dataset and split."""
-    X_tensor, Y_tensor = dataset.make_one_shot_iterator().get_next()
+    X_tensor, Y_tensor = tf.compat.v1.data.make_one_shot_iterator(dataset).get_next()
 
     x_list = []
     y_list = []
-    with tf.Session() as sess:
+
+    with tf.compat.v1.Session() as sess:
         try:
             while True:
                 x, y = sess.run([X_tensor, Y_tensor])

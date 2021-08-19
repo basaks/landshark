@@ -100,8 +100,10 @@ def train_test(records_train: List[str],
                ) -> None:
     """Model training and periodic hold-out testing."""
     saver = BestScoreSaver(directory)
-    sess_config = tf.ConfigProto(device_count={"GPU": int(params.use_gpu)},
-                                 gpu_options={"allow_growth": True})
+    sess_config = tf.compat.v1.ConfigProto(
+        device_count={"GPU": int(params.use_gpu)},
+        gpu_options={"allow_growth": True}
+    )
 
     train_fn = dataset_fn(records_train, params.batchsize, metadata.features,
                           metadata.targets, params.epochs, shuffle=True)
@@ -155,8 +157,8 @@ def predict(checkpoint_dir: str,
             params: QueryConfig
             ) -> Generator:
     """Load a model and predict results for record inputs."""
-    sess_config = tf.ConfigProto(device_count={"GPU": int(params.use_gpu)},
-                                 gpu_options={"allow_growth": True})
+    sess_config = tf.compat.v1.ConfigProto(device_count={"GPU": int(params.use_gpu)},
+                                           gpu_options={"allow_growth": True})
     predict_fn = dataset_fn(records, params.batchsize, metadata.features)
     run_config = tf.estimator.RunConfig(
         # tf_random_seed=params.seed,
