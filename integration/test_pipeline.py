@@ -39,7 +39,7 @@ model_files = {
 }
 
 training_args = {
-    "landshark": ["--epochs", "200", "--iterations", "5"],
+    "landshark": ["--epochs", "20", "--iterations", "5"],
     "skshark": []
 }
 
@@ -105,10 +105,10 @@ def import_targets(target_dir, target_name, target_flags, ncpus):
     return target_file
 
 
-def extract_training_data(target_file, target_name, ncpus):
+def extract_training_data(target_file, target_name, ncpus, half_width):
     _run(["landshark-extract", "--nworkers", ncpus, "--batch-mb", BATCH_MB,
           "traintest", "--features", "features_sirsam.hdf5", "--split", 1, 10,
-          "--targets", target_file, "--name", "sirsam"])
+          "--targets", target_file, "--name", "sirsam", "--halfwidth", half_width])
     trainingdata_folder = "traintest_sirsam_fold1of10"
     assert os.path.isdir(trainingdata_folder)
     return trainingdata_folder
@@ -175,8 +175,7 @@ def test_full_pipeline(tmpdir, data_loc, whichfeatures, whichproblem,
     target_file = import_targets(target_dir, target_name, target_flags,
                                  ncpus)
     print("Extracting training data...")
-    trainingdata_folder = extract_training_data(target_file,
-                                                target_name, ncpus)
+    trainingdata_folder = extract_training_data(target_file, target_name, ncpus, half_width)
 
     print("Extracting query data...")
     querydata_folder = extract_query_data(feature_file, ncpus)
