@@ -22,6 +22,11 @@ from tensorflow import estimator
 from landshark import config as utils
 from landshark.metadata import Training
 
+def r_squared(labels, predictions):
+    SST, update_op1 = tf.metrics.mean_squared_error(labels, tf.reduce_mean(labels, keepdims=True))
+    SSE, update_op2 = tf.metrics.mean_squared_error(labels, predictions)
+    return tf.subtract(1.0, tf.div(SSE, SST)), tf.group(update_op1, update_op2)
+
 
 def model(mode: estimator.ModeKeys,
           X_con: Optional[Dict[str, tf.Tensor]],
@@ -133,7 +138,8 @@ def model(mode: estimator.ModeKeys,
 
     # Compute evaluation metrics.
     mse = tf.metrics.mean_squared_error(labels=Y, predictions=phi)
-    metrics = {"mse": mse}
+    r2 = r_squared(labels=Y, predictions=phi)
+    metrics = {"mse": mse, "r2": r2}
 
     if mode == estimator.ModeKeys.EVAL:
         return tf.estimator.EstimatorSpec(mode, loss=loss,
