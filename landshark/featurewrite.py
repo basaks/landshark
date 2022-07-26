@@ -134,11 +134,12 @@ def _read_continuous_target_metadata(hfile: tables.File) -> ContinuousTarget:
     normalised = hfile.root.continuous_data.attrs.normalised
     N = hfile.root.continuous_data.attrs.N
     labels = [k.decode() for k in hfile.root.continuous_labels.read()]
+    coordinates = hfile.root.coordinates.read()
     means, sds = None, None
     if normalised:
         means = hfile.root.continuous_means.read()
         sds = hfile.root.continuous_sds.read()
-    meta = ContinuousTarget(N, labels, means, sds)
+    meta = ContinuousTarget(N, labels, means, sds, coordinates)
     return meta
 
 
@@ -293,7 +294,7 @@ def write_coordinates(
         _make_str_vlarray(h5file, "coordinates_columns", array_src.columns)
         array.attrs.missing = array_src.missing
         for s in batch_slices(batchsize, array_src.shape[0]):
-            array[s.start : s.stop] = array_src(s)
+            array[s.start: s.stop] = array_src(s)
 
 
 def _make_int_vlarray(h5file: tables.File, name: str, attribute: np.ndarray) -> None:

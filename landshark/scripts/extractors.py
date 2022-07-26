@@ -32,7 +32,7 @@ from landshark.dataprocess import (
 from landshark.featurewrite import read_feature_metadata, read_target_metadata
 from landshark.hread import CategoricalH5ArraySource, ContinuousH5ArraySource
 from landshark.image import strip_image_spec
-from landshark.kfold import KFolds
+from landshark.kfold import KFolds, GroupKFolds
 from landshark.scripts.logger import configure_logging
 from landshark.util import points_per_batch
 
@@ -158,7 +158,8 @@ def traintest_entrypoint(
     )
 
     n_rows = len(target_src)
-    kfolds = KFolds(n_rows, folds, random_seed)
+    coordinates = target_metadata.coordinates
+    kfolds = GroupKFolds(n_rows, folds, random_seed)
 
     directory = os.path.join(
         os.getcwd(), "traintest_{}_fold{}of{}".format(name, testfold, folds)

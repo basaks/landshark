@@ -14,9 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Iterator
+from typing import Iterator, Union
 
 import numpy as np
+from landshark.hread import CategoricalH5ArraySource, ContinuousH5ArraySource
 
 BATCH_SIZE = 10000
 
@@ -38,6 +39,30 @@ def _batch_randn(
 
 class KFolds:
     def __init__(self, N: int, K: int = 10, seed: int = 666) -> None:
+        """Low-ish memory k-fold cross validation indices generator.
+
+        Args:
+            N (int): Number of samples.
+            K (int, optional): Defaults to 10. Number of folds.
+            seed (int, optional): Defaults to 666. Random seed.
+        """
+        self.K = K
+        self.N = N
+        self.seed = seed
+        self.counts = {k: 0 for k in range(1, self.K + 1)}
+
+        for vals in _batch_randn(1, K + 1, N, BATCH_SIZE, self.seed):
+            indices, counts = np.unique(vals, return_counts=True)
+            for k, v in zip(indices, counts):
+                self.counts[k] += v
+
+    def iterator(self, batch_size: int) -> Iterator[np.ndarray]:
+        """Return an iterator of fold index batches."""
+        return _batch_randn(1, self.K + 1, self.N, batch_size, self.seed)
+
+
+class GroupKFolds:
+    def __init__(self, coordinates: np.ndarray, N: int, K: int = 10, seed: int = 666) -> None:
         """Low-ish memory k-fold cross validation indices generator.
 
         Args:

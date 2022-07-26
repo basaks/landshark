@@ -16,7 +16,7 @@
 
 import logging
 from itertools import count, groupby
-from typing import Any, Dict, Iterator, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, Iterator, List, NamedTuple, Optional, Tuple, Union
 
 import numpy as np
 import tables
@@ -33,7 +33,7 @@ from landshark.image import (
     world_to_image,
 )
 from landshark.iteration import batch_slices
-from landshark.kfold import KFolds
+from landshark.kfold import KFolds, GroupKFolds
 from landshark.metadata import FeatureSet
 from landshark.multiproc import task_list
 from landshark.patch import PatchMaskRowRW, PatchRowRW
@@ -51,7 +51,7 @@ class ProcessTrainingArgs(NamedTuple):
     image_spec: ImageSpec
     halfwidth: int
     testfold: int
-    folds: KFolds
+    folds: Union[KFolds, GroupKFolds]
     directory: str
     batchsize: int
     nworkers: int

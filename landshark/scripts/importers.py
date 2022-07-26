@@ -295,6 +295,7 @@ def targets_entrypoint(
         cocon_src = CoordinateShpArraySource(shapefile, random_seed)
         cocon_batchsize = mb_to_points(batchMB, ndim_con=0, ndim_cat=0, ndim_coord=2)
         write_coordinates(cocon_src, h5file, cocon_batchsize)
+        coordinates = cocon_src.
 
         if categorical:
             log.info("Reading shapefile categorical records")
@@ -312,6 +313,7 @@ def targets_entrypoint(
                 nvalues=ncats,
                 mappings=mappings,
                 counts=counts,
+                coordinates=coordinates,
             )
             write_target_metadata(cat_meta, h5file)
         else:
@@ -323,7 +325,7 @@ def targets_entrypoint(
             mean, sd = get_stats(con_source, con_batchsize) if normalise else None, None
             write_continuous(con_source, h5file, nworkers, con_batchsize)
             con_meta = meta.ContinuousTarget(
-                N=con_source.shape[0], labels=con_source.columns, means=mean, sds=sd
+                N=con_source.shape[0], labels=con_source.columns, means=mean, sds=sd, coordinates=coordinates
             )
             write_target_metadata(con_meta, h5file)
     log.info("Target import complete")

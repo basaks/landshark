@@ -166,6 +166,7 @@ class CategoricalTarget(PickleObj):
         nvalues: np.ndarray,
         mappings: List[np.ndarray],
         counts: List[np.ndarray],
+        coordinates: np.ndarray,
     ) -> None:
         self.N = N
         self.D = len(labels)
@@ -173,6 +174,7 @@ class CategoricalTarget(PickleObj):
         self.mappings = mappings
         self.counts = counts
         self.labels = labels
+        self.coordinates = coordinates
 
 
 class ContinuousTarget(PickleObj):
@@ -181,7 +183,7 @@ class ContinuousTarget(PickleObj):
     dtype = ContinuousType
 
     def __init__(
-        self, N: int, labels: np.ndarray, means: np.ndarray, sds: np.ndarray
+        self, N: int, labels: np.ndarray, means: np.ndarray, sds: np.ndarray, coordinates: np.ndarray,
     ) -> None:
         self.N = N
         self.D = len(labels)
@@ -189,6 +191,7 @@ class ContinuousTarget(PickleObj):
         self.means = means
         self.sds = sds
         self.labels = labels
+        self.coordinates = coordinates
 
 
 Target = Union[ContinuousTarget, CategoricalTarget]
