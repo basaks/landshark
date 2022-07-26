@@ -295,8 +295,6 @@ def targets_entrypoint(
         cocon_src = CoordinateShpArraySource(shapefile, random_seed)
         cocon_batchsize = mb_to_points(batchMB, ndim_con=0, ndim_cat=0, ndim_coord=2)
         write_coordinates(cocon_src, h5file, cocon_batchsize)
-        coordinates = cocon_src.
-
         if categorical:
             log.info("Reading shapefile categorical records")
             cat_source = CategoricalShpArraySource(shapefile, records, random_seed)

@@ -158,7 +158,10 @@ def traintest_entrypoint(
     )
 
     n_rows = len(target_src)
-    coordinates = target_metadata.coordinates
+    # import IPython; IPython.embed(); import sys; sys.exit()
+    with target_src:
+        coords = target_src.coords.read()
+
     kfolds = GroupKFolds(n_rows, folds, random_seed)
 
     directory = os.path.join(
