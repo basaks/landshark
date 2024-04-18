@@ -1,15 +1,18 @@
-FROM python:3.6-slim
-MAINTAINER Dave Cole <dave.cole@data61.csiro.au>
+FROM python:3.9-slim
+MAINTAINER Sudipta Basak <sudipta@tasnix.com>
 
 WORKDIR /usr/src/landshark
 
-RUN apt-get update && apt-get upgrade \
-    && apt-get install -y --no-install-recommends \
+RUN apt update && apt upgrade -y
+RUN apt-get install -y --no-install-recommends \
         make \
         gcc \
         libc6-dev \
-        libopenblas-base \
-        libgdal20 \
-        libhdf5-100 \
+        libopenblas-dev \
+        libgdal-dev  \
+        libhdf5-dev \
     && rm -rf /var/lib/apt/lists/* \
     && alias pip=pip3
+
+RUN pip install -U pip
+# RUN pip install -e .[dev]

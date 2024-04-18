@@ -102,7 +102,7 @@ def train_entrypoint(
 ) -> None:
     """Entry point for sklearn model training."""
     metadata, training_records, testing_records, model_dir, cf = setup_training(
-        config, data
+        config, data, False
     )
 
     batchsize = points_per_batch(metadata.features, batchMB)

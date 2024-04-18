@@ -146,7 +146,7 @@ def _unpack(
 
 def _ndarray_feature(x: np.ndarray) -> tf.train.Feature:
     """Create an ndarray feature stored as bytes."""
-    x_bytes = x.tostring()
+    x_bytes = x.tobytes()
     feature = tf.train.Feature(bytes_list=tf.train.BytesList(value=[x_bytes]))
     return feature
 

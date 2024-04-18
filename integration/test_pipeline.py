@@ -64,12 +64,19 @@ target_files = {
 }
 
 
-@pytest.fixture(params=["continuous-only", "categorical-only", "both"])
+@pytest.fixture(params=[
+    "continuous-only",
+    "categorical-only",
+    "both"
+])
 def whichfeatures(request: FixtureRequest) -> Any:
     return request.param
 
 
-@pytest.fixture(params=["regression", "classification"])
+@pytest.fixture(params=[
+    "regression",
+    "classification"
+])
 def whichproblem(request: FixtureRequest) -> Any:
     return request.param
 
@@ -84,7 +91,11 @@ def half_width(request: FixtureRequest) -> Any:
     return request.param
 
 
-@pytest.fixture(params=["landshark", "skshark", "landshark-keras"])
+@pytest.fixture(params=[
+    "landshark",
+    "skshark",
+    "landshark-keras"
+])
 def whichalgo(request: FixtureRequest) -> Any:
     return request.param
 
