@@ -31,6 +31,12 @@ mainly for validation purposes).
 
 ## Installation
 
+The following instructions are deprecated and needs to be adapted for a more modern
+python stack.
+
+[Follow this guide for a docker based installation](README-DOCKER.md).
+
+
 ### Prerequisites
 
  The following will need to be installed before installing Landshark:
