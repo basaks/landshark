@@ -4,6 +4,7 @@ Install docker in your computer.
 Then use the following command to build your docker image:
 
 ```bash
+$ cd /path/to/landshark_repo_in_your_pc/ 
 $ docker build -t landshark:0.1 .
 ```
 
@@ -27,5 +28,5 @@ $ pip install -e .[dev]
 
 Check the tests can be run:
 ```bash
-pytest tests -sx
+$ pytest tests -sx
 ```
