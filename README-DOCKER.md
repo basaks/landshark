@@ -30,3 +30,8 @@ Check the tests can be run:
 ```bash
 $ pytest tests -sx
 ```
+
+Then run the integration tests:
+```bash
+$ pytest integration/test_pipeline.py
+```
