@@ -4,8 +4,11 @@ export name="sirsam"
 landshark-import --nworkers 0 --batch-mb 0.001 tifs \
     --name ${name} \
     --ignore-crs  \
-    --continuous_list integration/data/continuous/continuous_list.txt \
-    --continuous ../integration/data/continuous
+    --continuous ../integration/data/continuous \
+#    --continuous_list ../integration/data/continuous/continuous_list.txt
+
+
+
 
 # extract targets
 landshark-import --batch-mb 0.001 targets \
@@ -15,7 +18,6 @@ landshark-import --batch-mb 0.001 targets \
   --dtype continuous \
   --record Zr_ppm_i_1
 
-
 # extract query for prediction
 landshark-extract query \
     --features features_${name}.hdf5 \
@@ -23,8 +25,6 @@ landshark-extract query \
     --name ${name} \
     --halfwidth 1
 
-
-exit 0
 
 echo "===========entering train test block ============================"
 echo "===========entering train test block ============================"
@@ -126,3 +126,5 @@ landshark -v DEBUG --keras-model --batch-mb 0.001 predict_oos \
     --checkpoint nn_regression_keras_model_1of10 \
     --data traintest_${name}_oos_fold1of1 \
     --pred_ensemble_size 12000000  # not used
+
+exit 0
