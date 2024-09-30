@@ -353,18 +353,16 @@ def oos_predict_entrypoint(
     )
     y_pred = [y for y in y_dash_it]  # evaluation
     labels = [k for k, v in y_pred[0].items()]
-    y_pred_ = []
-    for yy in y_pred:
-        y_pred_.append(np.vstack([y for y in yy.values()]).T)
-    y_pred_numpy = np.vstack(y_pred_)
-
     xtest = dataset_fn(
         oos_records, 1000, oos_metadata.features, oos_metadata.targets
     )()
     ds_numpy = tfds.as_numpy(xtest)
 
     y_true_numpy = np.vstack([ex[1] for ex in ds_numpy])
+
+    y_pred_numpy = np.vstack([np.hstack(list(v.values())) for v in y_pred])
     scores = score(labels, y_true_numpy, y_pred_numpy)
+
     score_string = "OOS Validation complete:\n"
     for label, scrs in scores.items():
         score_string += "{}\n".format(label)
